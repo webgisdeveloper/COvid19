@@ -33,9 +33,9 @@ def shade_weekends(ax, header):
 
         start = x_i - 0.5
         end = x_i + 0.5
-        if time == '0200':
+        if time == '0400':
             start = x_i - 0.45
-        elif time == '1800':
+        elif time == '2000':
             end = x_i + 0.45
 
         ax.axvspan(start, end, facecolor = 'gray', alpha = alpha)
@@ -47,7 +47,7 @@ def label_days(ax, header):
     labels = []
     for field in header[baseline_range['start']:]:
         timepoint = field.split(' ')
-        if timepoint[-1] == '1000':
+        if timepoint[-1] == '1200':
             ticks.append(x_i)
             labels.append(timepoint[1][0])
         x_i+=1
@@ -144,15 +144,17 @@ if args.n:
     if args.n == '-1':
         to_plot = range(len(B))
     else:
+        print(args.n)
         to_plot = [int(x)-1 for x in args.n.split(',')]
 
+print("to_plot",to_plot)
 
 fig = plt.figure(figsize=(args.width,args.height), dpi=300)
 
 rows=len(to_plot)
 cols=1
 
-outer_grid = gridspec.GridSpec(rows, cols, wspace=0.0, hspace=0.1)
+outer_grid = gridspec.GridSpec(rows, cols, wspace=0.0, hspace=0.3)
 
 plot_i = 0
 for i in to_plot:
@@ -177,7 +179,7 @@ for i in to_plot:
             C[i],
             lw=0.5,
             label='current')
-
+    ax.set_title("Tile: "+','.join(loc[i]), fontsize=5)
     ax.set_ylabel('Density', fontsize=4)
 
     clear_ax(ax)
