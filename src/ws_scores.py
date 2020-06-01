@@ -273,7 +273,7 @@ for i in to_plot:
         curr_x = plot_ws(ax, c_header, c_wd_u, c_we_u, c_ws, curr_x)
         week_i += 1
 
-    ax.set_title("Tile: "+','.join(loc[i])+":"+str(b_ws), fontsize=5)
+    ax.set_title("Tile: "+','.join(loc[i])+" Baseline_ws:"+str(b_ws), fontsize=5)
     ax.set_ylabel('Density', fontsize=4)
 
     clear_ax(ax)
