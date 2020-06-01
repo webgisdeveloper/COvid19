@@ -131,7 +131,7 @@ args = parser.parse_args()
 
 Y=[]
 for l in sys.stdin:
-    y = [float(x) for x in  l.rstrip().split(args.delim)]
+    y = [float(x) for x in  l.rstrip().split(args.delim)[1:]]
     Y.append(y)
 
 fig = None
