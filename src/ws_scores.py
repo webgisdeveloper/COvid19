@@ -71,9 +71,9 @@ def shade_weekends(ax, header):
 
         start = x_i - 0.5
         end = x_i + 0.5
-        if time == '0200':
+        if time == '0400':
             start = x_i - 0.45
-        elif time == '1800':
+        elif time == '2000':
             end = x_i + 0.45
 
         ax.axvspan(start, end, facecolor = 'gray', alpha = alpha)
@@ -85,7 +85,7 @@ def label_days(ax, header):
     labels = []
     for field in header[baseline_range['start']:]:
         timepoint = field.split(' ')
-        if timepoint[-1] == '1000':
+        if timepoint[-1] == '1200':
             ticks.append(x_i)
             labels.append(timepoint[1][0])
         x_i+=1
@@ -167,7 +167,7 @@ header = None
 B = []
 C = []
 loc = []
-i = 1
+inx = 1
 out_header = False
 for row in input_file:
     if header is None:
@@ -184,9 +184,8 @@ for row in input_file:
 
         b_header = header[baseline_range['start']:baseline_range['end']]
         b_wd_u, b_we_u, b_ws = get_ws(b, b_header)
-
-        O = [i] + row[0:3] + [np.mean(b), b_ws]
-
+        O = [inx] + row[0:3] + [np.mean(b), b_ws]
+        #print(inx)
         c = row[crisis_range['start']:]
         c = [float(x) for x in c]
 
@@ -211,14 +210,13 @@ for row in input_file:
             print(args.delim.join(h))
             out_header = True
 
-
         print(args.delim.join([str(o) for o in O]))
 
 
         B.append([float(x) for x in b])
         C.append([float(x) for x in c])
 
-        i += 1
+        inx += 1
 
 if args.outfile is None:
     sys.exit(0)
@@ -236,7 +234,7 @@ fig = plt.figure(figsize=(args.width,args.height), dpi=300)
 rows=len(to_plot)
 cols=1
 
-outer_grid = gridspec.GridSpec(rows, cols, wspace=0.0, hspace=0.1)
+outer_grid = gridspec.GridSpec(rows, cols, wspace=0.0, hspace=0.3)
 
 plot_i = 0
 for i in to_plot:
@@ -256,6 +254,8 @@ for i in to_plot:
 
     b_header = header[baseline_range['start']:baseline_range['end']]
     b_wd_u, b_we_u, b_ws = get_ws(B[i], b_header)
+    print(i,b_ws,b_wd_u,b_we_u)
+
     curr_x = 0
     curr_x = plot_ws(ax, b_header, b_wd_u, b_we_u, b_ws, curr_x)
 
@@ -273,7 +273,7 @@ for i in to_plot:
         curr_x = plot_ws(ax, c_header, c_wd_u, c_we_u, c_ws, curr_x)
         week_i += 1
 
-
+    ax.set_title("Tile: "+','.join(loc[i])+":"+str(b_ws), fontsize=5)
     ax.set_ylabel('Density', fontsize=4)
 
     clear_ax(ax)
